@@ -113,7 +113,7 @@ export default function Header() {
               </button>
             ) : (
               <Link
-                href="/admin"
+                href="/login"
                 className="hidden md:flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-400 hover:text-white"
               >
                 <User className="w-3.5 h-3.5" />
@@ -196,6 +196,15 @@ export default function Header() {
                     className="px-4 py-3 text-base font-bold text-amber-300 rounded-lg bg-amber-500/10 border border-amber-500/20"
                   >
                     Admin Dashboard
+                  </Link>
+                )}
+                {!user && (
+                  <Link
+                    href="/login"
+                    onClick={closeMenu}
+                    className="px-4 py-3 text-base font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/60 transition-all"
+                  >
+                    Login / Register
                   </Link>
                 )}
               </nav>
