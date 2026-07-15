@@ -22,7 +22,7 @@ const checkoutSchema = z.object({
   state: z.string().min(2, { message: "State must be specified." }),
   pincode: z.string().min(6, { message: "Enter a valid 6-digit Pincode." }).max(6),
   paymentMethod: z.enum(["COD", "UPI", "Card"], {
-    errorMap: () => ({ message: "Please select a payment option." }),
+    message: "Please select a payment option.",
   }),
 });
 

@@ -14,7 +14,10 @@ const formSchema = z.object({
     .string()
     .min(10, { message: "Please enter a valid 10-digit phone number." })
     .max(12, { message: "Please enter a valid phone number." }),
-  interest: z.enum(["buy-new", "sell-old", "laptop", "tablet", "general"]),
+  interest: z.enum(
+    ["buy-new", "sell-old", "laptop", "tablet", "general"],
+    { message: "Please select a category of interest." }
+  ),
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
 });
 
