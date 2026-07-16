@@ -5,7 +5,7 @@ import { encrypt, decrypt, hashEmail } from "@/lib/encryption";
 
 export async function GET(req: Request) {
   try {
-    const { searchParams, origin } = new URL(req.url);
+    const { searchParams } = new URL(req.url);
     const code = searchParams.get("code");
     
     if (!code) {
@@ -19,7 +19,17 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Google OAuth credentials not configured" }, { status: 500 });
     }
 
-    const redirectUri = `${origin}/api/auth/google/callback`;
+    // Determine the absolute callback URI to match the url route
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    let redirectUri = "";
+    if (appUrl) {
+      redirectUri = `${appUrl.replace(/\/$/, "")}/api/auth/google/callback`;
+    } else {
+      const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
+      const proto = req.headers.get("x-forwarded-proto") || "http";
+      const protocol = host && !host.includes("localhost") ? "https" : proto;
+      redirectUri = host ? `${protocol}://${host}/api/auth/google/callback` : `${new URL(req.url).origin}/api/auth/google/callback`;
+    }
 
     // 1. Exchange auth code for tokens
     const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
